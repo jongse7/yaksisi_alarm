@@ -78,14 +78,14 @@ class Calendar extends StatelessWidget {
                 return Center(
                   child: Text(
                     '토',
-                    style: defaultTextStyle.copyWith(color: Colors.blue),
+                    style: defaultTextStyle.copyWith(color: Colors.blue.withOpacity(0.5)),
                   ),
                 );
               case 7:
                 return Center(
                   child: Text(
                     '일',
-                    style: defaultTextStyle.copyWith(color: Colors.red),
+                    style: defaultTextStyle.copyWith(color: Colors.red.withOpacity(0.5)),
                   ),
                 );
             }

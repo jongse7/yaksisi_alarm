@@ -1,8 +1,10 @@
 import 'package:clock_analog/screen/schedule_write_screen/widget/memo.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../coponent/navigator_bar.dart';
 import '../calendar_screen/model/marker_model.dart';
+import 'database/dosage_cubit.dart';
 import 'widget/group_button.dart';
 import 'widget/pill_name_textfield.dart';
 
@@ -44,10 +46,6 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
                     onPressedEndDay: _selectEndDay,
                   ),
                   _Line(),
-                  VariousOfPills(
-                    onChanged: changePillVarious,
-                  ),
-                  _Line(),
                   _SelectPillNumber(
                     onChanged: changePillNumber,
                   ),
@@ -83,7 +81,6 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
     "종료일": DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 7),
-    "투약 개수": 0,
     "투약 횟수": 0,
     "투약 요일": [
       0,
@@ -94,9 +91,9 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
       5,
       6,
     ],
-    "투약 시간1": TimeOfDay(hour: 0, minute: 0),
-    "투약 시간2": TimeOfDay(hour: 0, minute: 0),
-    "투약 시간3": TimeOfDay(hour: 0, minute: 0),
+    "투약 시간1": TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().hour),
+    "투약 시간2": null,
+    "투약 시간3": null,
     "메모": "",
   };
 
@@ -144,18 +141,6 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
         dosage["종료일"] = endDay;
       });
     }
-  }
-
-  String memo = '';
-
-  // 투약 개수 입력
-  int pillVarious = 0;
-
-  void changePillVarious(value) {
-    setState(() {
-      pillVarious = value;
-      dosage["투약 개수"] = pillVarious;
-    });
   }
 
   // 투약 횟수 입력
@@ -214,11 +199,16 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
       cancelText: "취소",
       confirmText: "확인",
     );
-
     dosage["투약 시간$index"] = selectedTime;
+
+    print(dosage["투약 시간1"]);
+    print(dosage["투약 시간2"]);
+    print(dosage["투약 시간3"]);
   }
 
   // memo 입력값 받는 콜백
+
+  String memo = '';
   void changeMemo(value) {
     setState(() {
       memo = value;
@@ -357,7 +347,7 @@ class _Duration extends StatelessWidget {
               Text(
                 '시작 날짜',
                 style: TextStyle(
-                  color: Colors.red,
+                  color: Colors.white,
                   fontSize: width * 0.045,
                 ),
               ),
@@ -393,7 +383,7 @@ class _Duration extends StatelessWidget {
               Text(
                 '종료 날짜',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.white,
                   fontSize: width * 0.045,
                 ),
               ),
@@ -424,35 +414,6 @@ class _Duration extends StatelessWidget {
               ),
             ],
           )
-        ],
-      ),
-    );
-  }
-}
-
-// 투약 개수
-class VariousOfPills extends StatelessWidget {
-  final ValueChanged onChanged;
-
-  const VariousOfPills({required this.onChanged, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> buttonLables = ['1정', '2정', '3정', '4정'];
-    List<int> buttonValues = [1, 2, 3, 4];
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-
-    return _Frame(
-      contentTitle: "투약 개수",
-      middleContent: Row(
-        children: [
-          GroupButton(
-            valueChanged: onChanged,
-            buttonWidth: width * 0.14,
-            buttonLables: buttonLables,
-            buttonValues: buttonValues,
-          ),
         ],
       ),
     );
@@ -686,7 +647,7 @@ class _CancelAndStoreButton extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                getDate(dosage);
+                BlocProvider.of<DosageCubit>(context).addData(dosage);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => NavigatorBar(),
