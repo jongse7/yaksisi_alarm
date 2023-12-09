@@ -7,6 +7,7 @@ import '../alarm/view/alarm view/pill_list_screen.dart';
 import '../alarm/view_model/bloc/alarm_bloc/alarm_cubit.dart';
 import '../screen/calendar_screen/calendar_screen.dart';
 import '../screen/empty_screen.dart';
+import '../screen/schedule_write_screen/widget_model/bloc/dosage_cubit.dart';
 import 'camera_pop_up.dart';
 
 class NavigatorBar extends StatelessWidget {
@@ -45,7 +46,7 @@ class BottomTapBar extends StatelessWidget {
         children: [
           CalendarScreen(), // 달력 페이지
           EmptyScreen(),
-          BlocProvider(create: (context) => AlarmCubit(),child:PillListScreen()), // 투약 목록 페이지
+          BlocProvider<DosageCubit>(create: (context) => DosageCubit(),child:PillListScreen()), // 투약 목록 페이지
         ],
       ),
       extendBodyBehindAppBar: true, // add this line

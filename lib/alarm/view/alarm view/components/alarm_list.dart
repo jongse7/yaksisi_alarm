@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../model/alarm_model.dart';
-import '../../../view_model/bloc/alarm_bloc/alarm_cubit.dart';
-import '../../../view_model/bloc/alarm_bloc/alarm_states.dart';
-import '../../../view_model/database_helper/database_helper.dart';
+import '../../../../screen/schedule_write_screen/widget_model/bloc/dosage_cubit.dart';
+import '../../../../screen/schedule_write_screen/widget_model/bloc/dosage_states.dart';
+import '../../../../screen/schedule_write_screen/widget_model/model/dosage_model.dart';
 import '../../buttons/warning.dart';
+import 'package:clock_analog/screen/schedule_write_screen/widget_model/database_helper/database_helper.dart';
 
 // 투약 목록 리스트뷰
 
@@ -28,54 +28,58 @@ class AlarmList extends StatelessWidget {
     int colorNumber = 0;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return BlocConsumer<AlarmCubit, AlarmStates>(
-      builder: (context, state) {
-        if (state is HasData) {
-          return FutureBuilder(
-            future: BlocProvider.of<AlarmCubit>(context).list,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    colorNumber++;
-                    if(colorNumber > 2){
-                      colorNumber = 0;
-                    }
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.01),
-                      child: Row(
-                        children: [
-                          _LeftBox(
-                            boxColor: colorList[0][colorNumber],
-                          ),
-                          _RightBox(
-                            boxColor: colorList[1][colorNumber],
-                            snapshot: snapshot,
-                            index: index,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              } else {
-                return const Text("");
-              }
-            },
-          );
-        } else {
-          return Container();
-        }
-      },
-      listener: (context, state) {},
+    return SingleChildScrollView(
+      child: BlocConsumer<DosageCubit, DosageStates>(
+        builder: (context, state) {
+          if (state is HasData) {
+            return FutureBuilder(
+              future: BlocProvider.of<DosageCubit>(context).list,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot);
+                  print(snapshot.hasData);
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      colorNumber++;
+                      if(colorNumber > 2){
+                        colorNumber = 0;
+                      }
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                        child: Row(
+                          children: [
+                            _LeftBox(
+                              boxColor: colorList[0][colorNumber],
+                            ),
+                            _RightBox(
+                              boxColor: colorList[1][colorNumber],
+                              snapshot: snapshot,
+                              index: index,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Text("");
+                }
+              },
+            );
+          } else {
+            return Container();
+          }
+        },
+        listener: (context, state) {},
+      ),
     );
   }
 }
 
 class _RightBox extends StatelessWidget {
   final Color boxColor;
-  final AsyncSnapshot<List<AlarmModel>> snapshot;
+  final AsyncSnapshot<List<DosageModel>> snapshot;
   final int index;
   const _RightBox(
       {required this.boxColor,
@@ -171,7 +175,7 @@ class _PillNameText extends StatelessWidget {
 }
 
 class _DayAndTimeText extends StatelessWidget {
-  final AsyncSnapshot<List<AlarmModel>> snapshot;
+  final AsyncSnapshot<List<DosageModel>> snapshot;
   final int index;
   const _DayAndTimeText({required this.snapshot, required this.index, Key? key})
       : super(key: key);
@@ -221,7 +225,7 @@ class _DayAndTimeText extends StatelessWidget {
 }
 
 class _DeleteAndFixButton extends StatelessWidget {
-  final AsyncSnapshot<List<AlarmModel>> snapshot;
+  final AsyncSnapshot<List<DosageModel>> snapshot;
   final int index;
   const _DeleteAndFixButton(
       {required this.snapshot, required this.index, Key? key})
@@ -241,7 +245,7 @@ class _DeleteAndFixButton extends StatelessWidget {
               DbHelper().delete(
                 snapshot.data![index].key!,
               );
-              BlocProvider.of<AlarmCubit>(context).getData();
+              BlocProvider.of<DosageCubit>(context).getData();
               Navigator.of(context).pop();
             }, context);
           },

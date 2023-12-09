@@ -1,8 +1,10 @@
 // 카메라 촬영/ 직접 작성 버튼 팝업
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../screen/schedule_write_screen/schedule_write.dart';
+import '../screen/schedule_write_screen/widget_model/bloc/dosage_cubit.dart';
 
 class CameraPopUp extends StatefulWidget {
   const CameraPopUp({super.key});
@@ -40,7 +42,7 @@ class _CameraPopUpState extends State<CameraPopUp> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (_) => ScheduleWrite(),
+                    builder: (_) => BlocProvider(create: (context) => DosageCubit(),child:ScheduleWrite()),
                   ),
                 );
               }),

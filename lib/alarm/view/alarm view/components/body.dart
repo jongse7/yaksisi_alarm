@@ -15,22 +15,19 @@ class Body extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '투약목록',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: width * 0.08,
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: height * 0.01),
+            child: Text(
+              '투약목록',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: width * 0.08,
+              ),
             ),
           ),
           Expanded(
             child: AlarmList(),
           ),
-          ElevatedButton(
-            onPressed: () {
-              BlocProvider.of<AlarmCubit>(context).addData(context);
-            },
-            child: Text('테스트'),
-          )
         ],
       ),
     );

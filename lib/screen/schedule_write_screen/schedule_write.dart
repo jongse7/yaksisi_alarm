@@ -1,10 +1,11 @@
+import 'package:clock_analog/alarm/view/alarm%20view/pill_list_screen.dart';
 import 'package:clock_analog/screen/schedule_write_screen/widget/memo.dart';
+import 'package:clock_analog/screen/schedule_write_screen/widget_model/bloc/dosage_cubit.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../coponent/navigator_bar.dart';
 import '../calendar_screen/model/marker_model.dart';
-import 'database/dosage_cubit.dart';
 import 'widget/group_button.dart';
 import 'widget/pill_name_textfield.dart';
 
@@ -16,6 +17,12 @@ class ScheduleWrite extends StatefulWidget {
 }
 
 class _ScheduleWriteState extends State<ScheduleWrite> {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<DosageCubit>(context).getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -172,7 +179,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
   // 투약 시간 입력받기
 
   void changeTime(int index) async {
-    Future<TimeOfDay?> selectedTime = showTimePicker(
+    TimeOfDay? selectedTime = await showTimePicker(
       context: context,
       builder: (context, child) {
         return Theme(
@@ -553,7 +560,7 @@ class _SelectTime extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          onPressed(index);
+                          onPressed(index + 1);
                         },
                         child: Text(
                           '시간 설정',
@@ -647,7 +654,7 @@ class _CancelAndStoreButton extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                BlocProvider.of<DosageCubit>(context).addData(dosage);
+                BlocProvider.of<DosageCubit>(context).addData(context, dosage: dosage);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => NavigatorBar(),
