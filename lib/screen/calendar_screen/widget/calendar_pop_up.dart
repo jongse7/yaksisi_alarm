@@ -51,13 +51,13 @@ class _CalendarPopUpState extends State<CalendarPopUp> {
                 children: [
                   Row(
                     children: [
-                      if (widget.event.isEat == true)
+                      if (widget.event.allEat == true)
                         Icon(
                           Icons.check_circle,
                           size: width * 0.1,
                           color: Colors.green,
                         ),
-                      if (widget.event.isEat == true)
+                      if (widget.event.allEat == true)
                         Text(
                           " 복약 완료",
                           style: TextStyle(
@@ -66,13 +66,13 @@ class _CalendarPopUpState extends State<CalendarPopUp> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      if (widget.event.isEat == false)
+                      if (widget.event.allEat == false)
                         Icon(
                           Icons.cancel,
                           size: width * 0.1,
                           color: Colors.red,
                         ),
-                      if (widget.event.isEat == false)
+                      if (widget.event.allEat == false)
                         Text(
                           " 미복용",
                           style: TextStyle(
@@ -188,39 +188,44 @@ class _CalendarPopUpState extends State<CalendarPopUp> {
                                 IconButton(
                                   onPressed: () {
                                     if (widget.event
-                                            .dosage!["투약 여부${index + 1}"] ==
+                                        .isEat[index] ==
                                         false) {
                                       widget.event
-                                          .dosage!["투약 여부${index + 1}"] = true;
+                                          .isEat[index] = true;
                                     } else {
                                       widget.event
-                                          .dosage!["투약 여부${index + 1}"] = false;
+                                          .isEat[index] = false;
                                     }
                                     setState(() {
                                       int isEatTrue = 0;
                                       for (int i = 1;
                                           i <= widget.event.dosage!["투약 횟수"];
                                           i++) {
-                                        if (widget.event.dosage!["투약 여부$i"] ==
+                                        if (widget.event
+                                            .isEat[i-1] ==
                                             true) {
                                           isEatTrue++;
                                         }
                                       }
                                       if (isEatTrue ==
                                           widget.event.dosage!["투약 횟수"]) {
-                                        widget.event.isEat = true;
+                                        widget.event.allEat = true;
                                       } else {
-                                        widget.event.isEat = false;
+                                        widget.event.allEat = false;
                                       }
                                     });
                                   },
-                                  icon: Icon(
+                                  padding: EdgeInsets.only(bottom: height * 0.01),
+                                  icon: widget.event
+                                      .isEat[index] ==
+                                      false
+                                      ?Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
+                                    size: width * 0.1,
+                                  ):Icon(
                                     Icons.check_box_rounded,
-                                    color: widget.event
-                                                .dosage!["투약 여부${index + 1}"] ==
-                                            false
-                                        ? Colors.grey
-                                        : Color(0xff51EE60),
+                                    color: Color(0xff51EE60),
                                     size: width * 0.1,
                                   ),
                                 ),

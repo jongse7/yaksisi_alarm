@@ -23,13 +23,13 @@ class MyDosage {
         final alarmSettings = AlarmSettings(
           id: Random().nextInt(100),
           dateTime: dateTime,
-          assetAudioPath: 'assets/audio/tune.mp3',
+          assetAudioPath: 'assets/audio/alarm_audio.mp3',
           loopAudio: true,
           vibrate: true,
           volumeMax: true,
           fadeDuration: 3.0,
-          notificationTitle: 'Alarm is Playing',
-          notificationBody: 'Tap to stop',
+          notificationTitle: '복약 시간 입니다',
+          notificationBody: '클릭 시 정지',
           enableNotificationOnKill: true,
           stopOnNotificationOpen: true,
         );

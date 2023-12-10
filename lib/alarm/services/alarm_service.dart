@@ -17,7 +17,7 @@ class MyAlarm {
     final alarmSettings = AlarmSettings(
       id: Random().nextInt(100),
       dateTime: dateTime,
-      assetAudioPath: 'assets/audio/tune.mp3',
+      assetAudioPath: 'assets/audio/alarm_audio.mp3',
       loopAudio: true,
       vibrate: true,
       volumeMax: true,

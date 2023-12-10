@@ -27,10 +27,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(// 날짜 overflow 방지 코드
         backgroundColor: Colors.black,
         body: SafeArea(
-          child: Calendar(
-            selectedDay: selectedDay,
-            focusedDay: focusedDay,
-            onDaySelected: onDaySelected,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: width * 0.05, left: width*0.05),
+                  child: Text('${selectedDay.month.toString().padLeft(2, '0')}월', style: TextStyle(
+                    color: Colors.white,
+                    fontSize: width * 0.075,
+                    fontWeight: FontWeight.w600
+                  ),),
+                ),
+                Calendar(
+                  selectedDay: selectedDay,
+                  focusedDay: focusedDay,
+                  onDaySelected: onDaySelected,
+                ),
+              ],
+            ),
           ),
         ));
   }

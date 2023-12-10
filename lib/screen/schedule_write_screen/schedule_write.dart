@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:clock_analog/alarm/view/alarm%20view/pill_list_screen.dart';
 import 'package:clock_analog/screen/schedule_write_screen/widget/memo.dart';
 import 'package:clock_analog/screen/schedule_write_screen/widget_model/bloc/dosage_cubit.dart';
@@ -72,6 +74,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
                     memo: memo,
                   ),
                   _CancelAndStoreButton(
+                    ColorList: ColorList,
                     dosage: dosage,
                   ),
                 ],
@@ -82,6 +85,8 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
       ),
     );
   }
+
+  var ColorList = [[Color(0xffED638C),Color(0xffF1C0CC)],[Color(0xffED9463),Color(0xffF1C9C0)],[Color(0xff9AE838),Color(0xffF0F3D0)]];
 
   Map<String, dynamic> dosage = {
     "약 이름": "영양제",
@@ -99,13 +104,11 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
       5,
       6,
     ],
-    "투약 시간1": TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().hour),
+    "투약 시간1": null,
     "투약 시간2": null,
     "투약 시간3": null,
-    "투약 여부1": false,
-    "투약 여부2": false,
-    "투약 여부3": false,
     "메모": "",
+    "색상": null,
   };
 
   String pillName = '';
@@ -623,8 +626,9 @@ class _Memo extends StatelessWidget {
 }
 
 class _CancelAndStoreButton extends StatelessWidget {
+  final List<dynamic> ColorList;
   final Map<String, dynamic> dosage;
-  const _CancelAndStoreButton({required this.dosage, super.key});
+  const _CancelAndStoreButton({required this.ColorList,required this.dosage, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -672,7 +676,11 @@ class _CancelAndStoreButton extends StatelessWidget {
               onPressed: () {
                 BlocProvider.of<DosageCubit>(context)
                     .addData(context, dosage: dosage);
+                Random random = Random();
+                int randomInt = random.nextInt(3);
+                dosage["색상"] = ColorList[randomInt];
                 getDate(dosage);
+                print(dosage.values);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => NavigatorBar(),

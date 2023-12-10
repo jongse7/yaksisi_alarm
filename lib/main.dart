@@ -9,9 +9,9 @@ void main() async {
   await initializeDateFormatting();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Alarm.init();
-
   runApp(
     const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     ),
   );
