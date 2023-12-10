@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:clock_analog/alarm/view/alarm%20view/pill_list_screen.dart';
 import 'package:clock_analog/screen/schedule_write_screen/widget/memo.dart';
 import 'package:clock_analog/screen/schedule_write_screen/widget_model/bloc/dosage_cubit.dart';

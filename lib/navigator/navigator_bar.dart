@@ -46,7 +46,7 @@ class BottomTapBar extends StatelessWidget {
       body: TabBarView(
         physics: NeverScrollableScrollPhysics(),
         children: [
-          CalendarScreen(), // 달력 페이지
+          BlocProvider(create:  (context) => DosageCubit(),child: CalendarScreen()), // 달력 페이지
           EmptyScreen(),
           BlocProvider(create:  (context) => DosageCubit(),child: DosageListScreen(),), // 투약 목록 페이지
         ],

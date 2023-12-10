@@ -83,7 +83,7 @@ class _RightBox extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: width * 0.75,
+          width: width * 0.8,
           height: height * 0.12,
           decoration: BoxDecoration(
             color: dosageList[index]["색상"][1],
@@ -237,11 +237,11 @@ class _DeleteAndFixButton extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     TextStyle textButtonStyle =
-        TextStyle(color: Color(0XFF6C6C6C), fontSize: width * 0.035);
+        TextStyle(color: Color(0XFF6C6C6C), fontSize: width * 0.033);
     return Row(
       children: [
         SizedBox(
-          width: width * 0.125,
+          width: width * 0.13,
           child: TextButton(
             onPressed: (){onPressed(index);},
             child: Text(
@@ -255,7 +255,7 @@ class _DeleteAndFixButton extends StatelessWidget {
           style: textButtonStyle,
         ),
         SizedBox(
-          width: width * 0.125,
+          width: width * 0.13,
           child: TextButton(
             onPressed: () {},
             child: Text(
