@@ -28,8 +28,8 @@ class MyDosage {
           vibrate: true,
           volumeMax: true,
           fadeDuration: 3.0,
-          notificationTitle: '복약 시간 입니다',
-          notificationBody: '클릭 시 정지',
+          notificationTitle: 'Alarm is Playing',
+          notificationBody: 'Tap to stop',
           enableNotificationOnKill: true,
           stopOnNotificationOpen: true,
         );

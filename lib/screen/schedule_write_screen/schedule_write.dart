@@ -680,7 +680,6 @@ class _CancelAndStoreButton extends StatelessWidget {
                 int randomInt = random.nextInt(3);
                 dosage["색상"] = ColorList[randomInt];
                 getDate(dosage);
-                print(dosage.values);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => NavigatorBar(),

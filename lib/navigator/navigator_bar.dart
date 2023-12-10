@@ -1,6 +1,7 @@
 // 하단 네비게이터 바
 
 import 'package:clock_analog/screen/dosage_list_screen/dosage_list_screen.dart';
+import 'package:clock_analog/screen/schedule_write_screen/schedule_write.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,7 +48,7 @@ class BottomTapBar extends StatelessWidget {
         children: [
           CalendarScreen(), // 달력 페이지
           EmptyScreen(),
-          DosageListScreen(), // 투약 목록 페이지
+          BlocProvider(create:  (context) => DosageCubit(),child: DosageListScreen(),), // 투약 목록 페이지
         ],
       ),
       extendBodyBehindAppBar: true, // add this line
