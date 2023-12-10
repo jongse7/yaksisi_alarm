@@ -1,13 +1,11 @@
 class Event {
-  Map<String, dynamic> dosage;
+  Map<String, dynamic>? dosage;
+  bool isEat = false;
 
   Event(this.dosage);
 }
 
 void getDate(Map<String, dynamic> dosage) {
-  // 새로운 event 생성
-  Event currentEvent = Event(dosage);
-
   // 일 차이 계산
   Duration difference = dosage["종료일"].difference(dosage["시작일"]);
 
@@ -18,6 +16,9 @@ void getDate(Map<String, dynamic> dosage) {
   for (int i = 0; i <= end; i++) {
     DateTime currentDay = dosage["시작일"].add(Duration(days: i));
 
+    // 각 날짜에 대한 새로운 event 생성
+    Event currentEvent = Event(dosage);
+
     if (events.containsKey(currentDay)) {
       // 이미 해당 날짜에 이벤트가 있는 경우의 처리
       events[currentDay]!.add(currentEvent);
@@ -26,6 +27,10 @@ void getDate(Map<String, dynamic> dosage) {
       events[currentDay] = [currentEvent];
     }
   }
+}
+
+void deleteDate() {
+
 }
 
 Map<DateTime, List<Event>> events = {

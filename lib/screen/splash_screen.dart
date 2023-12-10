@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'package:clock_analog/coponent/navigator_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../alarm/view_model/bloc/alarm_bloc/alarm_cubit.dart';
-import '../alarm/view/alarm view/pill_list_screen.dart';
+import '../navigator/navigator_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

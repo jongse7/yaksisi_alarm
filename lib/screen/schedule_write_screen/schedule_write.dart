@@ -4,7 +4,7 @@ import 'package:clock_analog/screen/schedule_write_screen/widget_model/bloc/dosa
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../coponent/navigator_bar.dart';
+import '../../navigator/navigator_bar.dart';
 import '../calendar_screen/model/marker_model.dart';
 import 'widget/group_button.dart';
 import 'widget/pill_name_textfield.dart';
@@ -64,6 +64,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
                   _SelectTime(
                     pillNumber: pillNumber,
                     onPressed: changeTime,
+                    dosage: dosage,
                   ),
                   _Line(),
                   _Memo(
@@ -83,7 +84,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
   }
 
   Map<String, dynamic> dosage = {
-    "약 이름": "",
+    "약 이름": "영양제",
     "시작일":
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
     "종료일": DateTime(
@@ -101,6 +102,9 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
     "투약 시간1": TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().hour),
     "투약 시간2": null,
     "투약 시간3": null,
+    "투약 여부1": false,
+    "투약 여부2": false,
+    "투약 여부3": false,
     "메모": "",
   };
 
@@ -207,10 +211,7 @@ class _ScheduleWriteState extends State<ScheduleWrite> {
       confirmText: "확인",
     );
     dosage["투약 시간$index"] = selectedTime;
-
-    print(dosage["투약 시간1"]);
-    print(dosage["투약 시간2"]);
-    print(dosage["투약 시간3"]);
+    setState(() {});
   }
 
   // memo 입력값 받는 콜백
@@ -512,11 +513,15 @@ class _SelectDay extends StatelessWidget {
 
 // 투약 시간 선택
 class _SelectTime extends StatelessWidget {
+  final Map<String, dynamic> dosage;
   final int pillNumber;
   final void Function(int index) onPressed;
 
   const _SelectTime(
-      {required this.pillNumber, required this.onPressed, super.key});
+      {required this.pillNumber,
+      required this.onPressed,
+      required this.dosage,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -571,9 +576,20 @@ class _SelectTime extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      width: width * 0.05,
+                    ),
                     Expanded(
                       flex: 4,
-                      child: Text('ㅇㅇㅇ'),
+                      child: dosage["투약 시간${index + 1}"] == null
+                          ? SizedBox()
+                          : Text(
+                              "${dosage["투약 시간${index + 1}"].hour.toString()}시 ${dosage["투약 시간${index + 1}"].minute.toString().padLeft(2, '0')}분",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: width * 0.045,
+                              ),
+                            ),
                     ),
                   ],
                 ),
@@ -654,7 +670,9 @@ class _CancelAndStoreButton extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                BlocProvider.of<DosageCubit>(context).addData(context, dosage: dosage);
+                BlocProvider.of<DosageCubit>(context)
+                    .addData(context, dosage: dosage);
+                getDate(dosage);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => NavigatorBar(),

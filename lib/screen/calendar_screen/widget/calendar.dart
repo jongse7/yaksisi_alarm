@@ -1,8 +1,8 @@
 // 캘린더 위젯
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../model/marker_model.dart';
+import 'calendar_pop_up.dart';
 
 class Calendar extends StatelessWidget {
   final DateTime selectedDay;
@@ -78,19 +78,22 @@ class Calendar extends StatelessWidget {
                 return Center(
                   child: Text(
                     '토',
-                    style: defaultTextStyle.copyWith(color: Colors.blue.withOpacity(0.5)),
+                    style: defaultTextStyle.copyWith(
+                        color: Colors.blue.withOpacity(0.5)),
                   ),
                 );
               case 7:
                 return Center(
                   child: Text(
                     '일',
-                    style: defaultTextStyle.copyWith(color: Colors.red.withOpacity(0.5)),
+                    style: defaultTextStyle.copyWith(
+                        color: Colors.red.withOpacity(0.5)),
                   ),
                 );
             }
           },
-          markerBuilder: (context, date, events) {
+          markerBuilder: (context, date, eventList) {
+            DateTime currentDay = DateTime(date.year, date.month, date.day);
             if (events.isEmpty) return SizedBox();
             return Column(
               children: [
@@ -100,35 +103,53 @@ class Calendar extends StatelessWidget {
                 ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: events.length,
+                    itemCount: eventList.length,
                     itemBuilder: (context, index) {
+                      print(events[currentDay]![index].dosage!["약 이름"]);
                       return Padding(
                         padding: EdgeInsets.only(bottom: height * 0.01),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: width * 0.03,
-                              height: height * 0.02,
-                              decoration: BoxDecoration(
-                                color: Color(0xffED638C),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(width * 0.005),
-                                  bottomLeft: Radius.circular(width * 0.005),
+                        child: GestureDetector(
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (_) => CalendarPopUp(event: events[currentDay]![index]),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                width: width * 0.03,
+                                height: height * 0.02,
+                                decoration: BoxDecoration(
+                                  color: events[currentDay]![index].isEat == false?Color(0xffED638C):Color(0xff9AE838),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(width * 0.005),
+                                    bottomLeft: Radius.circular(width * 0.005),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              width: width * 0.11,
-                              height: height * 0.02,
-                              decoration: BoxDecoration(
-                                color: Color(0xffF1C0CC),
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(width * 0.005),
-                                  bottomRight: Radius.circular(width * 0.005),
+                              Container(
+                                width: width * 0.11,
+                                height: height * 0.02,
+                                decoration: BoxDecoration(
+                                  color: events[currentDay]![index].isEat == false?Color(0xffF1C0CC):Color(0xffF0F3D0),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(width * 0.005),
+                                    bottomRight: Radius.circular(width * 0.005),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                      events[currentDay]![index].dosage!["약 이름"],
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: width * 0.03,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     }),
